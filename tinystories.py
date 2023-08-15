@@ -9,7 +9,7 @@ import os
 import random
 from typing import List
 from concurrent.futures import ThreadPoolExecutor, as_completed
-import pandas as pd
+
 import numpy as np
 import requests
 import torch
@@ -18,11 +18,11 @@ from tqdm import tqdm
 
 from tokenizer import Tokenizer
 
-DATA_CACHE_DIR = "dataset"
+DATA_CACHE_DIR = "data"
 
 def create_query_response_pairs_from_csv(num_jsons=2):
 # Load the CSV data using pandas
-    csv_filename = "dataset/Customer-Support.csv"
+    csv_filename = "data/Customer-Support.csv"
     csv_data = pd.read_csv(csv_filename)
 
     # Calculate the number of examples per JSON
@@ -36,7 +36,7 @@ def create_query_response_pairs_from_csv(num_jsons=2):
         end_idx = (json_idx + 1) * examples_per_json if json_idx < num_jsons - 1 else len(csv_data)
 
         # Create JSON filename
-        json_filename = f"dataset/query_response_dataset_{json_idx}.json"
+        json_filename = f"data/query_response_dataset_{json_idx}.json"
 
         # Generate query-response pairs for the current JSON
         for _, row in csv_data.iloc[start_idx:end_idx].iterrows():
@@ -128,7 +128,8 @@ def pretokenize():
         print(f"Saved {tokenized_filename}")
 
     # iterate the shards and tokenize all of them one by one
-    shard_filenames = sorted(glob.glob(os.path.join("/home/alertrack/llama2.c/dataset", "*.json")))
+    data_dir = os.path.join(DATA_CACHE_DIR, "TinyStories_all_data")
+    shard_filenames = sorted(glob.glob(os.path.join(data_dir, "*.json")))
 
     # process all the shards in a threadpool
     with ThreadPoolExecutor(max_workers=8) as executor:
@@ -177,7 +178,6 @@ class PretokDataset(torch.utils.data.IterableDataset):
                     x = chunk[:-1]
                     y = chunk[1:]
                     yield x, y
-
 
 
 class Task:

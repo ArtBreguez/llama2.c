@@ -33,9 +33,9 @@ from tinystories import Task
 # -----------------------------------------------------------------------------
 # I/O
 out_dir = "out"
-eval_interval = 2000
+eval_interval = 2
 log_interval = 1
-eval_iters = 100
+eval_iters = 1
 eval_only = False  # if True, script exits right after the first eval
 always_save_checkpoint = False  # if True, always save a checkpoint after each eval
 init_from = "scratch"  # 'scratch' or 'resume'
@@ -55,14 +55,14 @@ dropout = 0.0
 # adamw optimizer
 gradient_accumulation_steps = 4  # used to simulate larger batch sizes
 learning_rate = 5e-4  # max learning rate
-max_iters = 100000  # total number of training iterations
+max_iters = 10  # total number of training iterations
 weight_decay = 1e-1
 beta1 = 0.9
 beta2 = 0.95
 grad_clip = 1.0  # clip gradients at this value, or disable if == 0.0
 # learning rate decay settings
 decay_lr = True  # whether to decay the learning rate
-warmup_iters = 1000  # how many steps to warm up for
+warmup_iters = 5  # how many steps to warm up for
 # system
 device = "cpu"  # examples: 'cpu', 'cuda', 'cuda:0', 'cuda:1' etc., or try 'mps' on macbooks
 dtype = "bfloat16"  # float32|bfloat16|float16
